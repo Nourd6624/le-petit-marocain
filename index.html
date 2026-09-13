@@ -332,14 +332,31 @@
   }
 
   .menu-list{max-width:680px;}
+
+  .menu-item-row{
+    display:flex;
+    align-items:flex-start;
+    gap:16px;
+    padding:18px 0;
+    border-bottom:1px solid rgba(247,242,231,0.14);
+  }
+  .menu-item-row:first-child{padding-top:0;}
+  .menu-item-main{flex:1; min-width:0;}
+
+  .dish-photo{
+    width:64px;
+    height:64px;
+    object-fit:cover;
+    border-radius:var(--radius);
+    flex-shrink:0;
+    background:rgba(247,242,231,0.06);
+  }
+
   .menu-item{
     display:flex;
     align-items:baseline;
     gap:10px;
-    padding:18px 0;
-    border-bottom:1px solid rgba(247,242,231,0.14);
   }
-  .menu-item:first-child{padding-top:0;}
   .menu-item .name{
     font-family:'Fraunces', serif;
     font-size:1.15rem;
@@ -540,6 +557,7 @@
   @media (max-width:520px){
     .hero .cta-row .btn{flex:1; justify-content:center;}
     .stat-row{gap:28px;}
+    .dish-photo{width:52px; height:52px;}
   }
 
   /* Accessibilité : focus visible */
@@ -806,14 +824,23 @@
     const descHtml = item.description
       ? `<span class="desc">${escapeHtml(item.description)}</span>`
       : '';
+    // Photo optionnelle : si absente, on n'affiche simplement pas de miniature.
+    const photoHtml = item.photoUrl
+      ? `<img class="dish-photo" src="${escapeHtml(item.photoUrl)}" alt="${escapeHtml(item.name)}" loading="lazy">`
+      : '';
     return `
       <div class="menu-item-wrap">
-        <div class="menu-item">
-          <span class="name">${escapeHtml(item.name)}</span>
-          <span class="leader"></span>
-          <span class="price">${priceHtml}</span>
+        <div class="menu-item-row">
+          ${photoHtml}
+          <div class="menu-item-main">
+            <div class="menu-item">
+              <span class="name">${escapeHtml(item.name)}</span>
+              <span class="leader"></span>
+              <span class="price">${priceHtml}</span>
+            </div>
+            ${descHtml}
+          </div>
         </div>
-        ${descHtml}
       </div>`;
   }
 
