@@ -371,6 +371,13 @@
     font-style:italic;
   }
 
+  .menu-empty{
+    color:#A79E8A;
+    font-style:italic;
+    font-size:0.9rem;
+    padding:14px 0;
+  }
+
   /* ---------- Horaires ---------- */
   .hours{background:var(--cream);}
   .hours .grid{
@@ -623,102 +630,38 @@
     <div class="menu-category active" id="couscous">
       <h3>Couscous</h3>
       <p class="cat-desc">Semoule roulée à la vapeur, légumes de saison et bouillon parfumé aux épices douces.</p>
-      <div class="menu-list">
-        <div class="menu-item-wrap">
-          <div class="menu-item">
-            <span class="name">Couscous royal</span>
-            <span class="leader"></span>
-            <span class="price">18 €</span>
-          </div>
-          <span class="desc">Agneau, poulet et merguez, légumes mijotés</span>
-        </div>
-      </div>
+      <div class="menu-list"><p class="menu-empty">Chargement du menu…</p></div>
     </div>
 
     <div class="menu-category" id="tajines">
       <h3>Tajines</h3>
       <p class="cat-desc">Cuisson lente à l'étouffée dans le tajine traditionnel en terre cuite.</p>
-      <div class="menu-list">
-        <div class="menu-item-wrap">
-          <div class="menu-item">
-            <span class="name">Tajine poulet</span>
-            <span class="leader"></span>
-            <span class="price">15 €</span>
-          </div>
-          <span class="desc">Citron confit, olives, oignons caramélisés</span>
-        </div>
-        <div class="menu-item-wrap">
-          <div class="menu-item">
-            <span class="name">Tajine agneau</span>
-            <span class="leader"></span>
-            <span class="price">17 €</span>
-          </div>
-          <span class="desc">Pruneaux, amandes grillées, miel et cannelle</span>
-        </div>
-      </div>
+      <div class="menu-list"><p class="menu-empty">Chargement du menu…</p></div>
     </div>
 
     <div class="menu-category" id="grillades">
       <h3>Grillades</h3>
       <p class="cat-desc">Viandes marinées, braisées au feu de bois.</p>
-      <div class="menu-list">
-        <div class="menu-item-wrap">
-          <div class="menu-item">
-            <span class="name">Brochettes</span>
-            <span class="leader"></span>
-            <span class="price">14 €</span>
-          </div>
-          <span class="desc">Bœuf ou poulet, marinade d'épices, servi avec frites</span>
-        </div>
-      </div>
+      <div class="menu-list"><p class="menu-empty">Chargement du menu…</p></div>
     </div>
 
     <div class="menu-category" id="entrees">
       <h3>Entrées</h3>
       <p class="cat-desc">Pour ouvrir l'appétit, dans la tradition marocaine.</p>
-      <div class="menu-list">
-        <div class="menu-item-wrap">
-          <div class="menu-item">
-            <span class="name">Pastilla</span>
-            <span class="leader"></span>
-            <span class="price">8 €</span>
-          </div>
-          <span class="desc">Feuilleté croustillant, volaille, amandes, sucre et cannelle</span>
-        </div>
-      </div>
+      <div class="menu-list"><p class="menu-empty">Chargement du menu…</p></div>
     </div>
 
     <div class="menu-category" id="boissons">
       <h3>Boissons</h3>
       <p class="cat-desc">Fraîches ou chaudes, pour accompagner le repas.</p>
-      <div class="menu-list">
-        <div class="menu-item-wrap">
-          <div class="menu-item">
-            <span class="name">Thé marocain</span>
-            <span class="leader"></span>
-            <span class="price">3 €</span>
-          </div>
-          <span class="desc">Thé vert à la menthe fraîche, servi traditionnellement</span>
-        </div>
-      </div>
+      <div class="menu-list"><p class="menu-empty">Chargement du menu…</p></div>
     </div>
 
     <div class="menu-category" id="desserts">
       <h3>Desserts</h3>
       <p class="cat-desc">Douceurs au miel et aux amandes.</p>
-      <div class="menu-list">
-        <div class="menu-item-wrap">
-          <div class="menu-item">
-            <span class="name">Cornes de gazelle</span>
-            <span class="leader"></span>
-            <span class="price">5 €</span>
-          </div>
-          <span class="desc">Pâtisserie fine à la pâte d'amande et fleur d'oranger</span>
-        </div>
-      </div>
+      <div class="menu-list"><p class="menu-empty">Chargement du menu…</p></div>
     </div>
-
-    <p class="menu-note">Exemple d'article ajouté pour compléter la catégorie « Desserts » — à modifier facilement (voir explications).</p>
   </div>
 </section>
 
@@ -830,6 +773,84 @@
       document.getElementById(tab.dataset.target).classList.add('active');
     });
   });
+
+  // ---------- Chargement du menu depuis Airtable (via /api/menu) ----------
+
+  // Correspondance entre la valeur du champ « Catégorie » dans Airtable
+  // et l'id de la section correspondante dans la page.
+  const CATEGORY_TO_SECTION_ID = {
+    'Couscous': 'couscous',
+    'Tajines': 'tajines',
+    'Grillades': 'grillades',
+    'Entrées': 'entrees',
+    'Boissons': 'boissons',
+    'Desserts': 'desserts',
+  };
+
+  function escapeHtml(value) {
+    return String(value).replace(/[&<>"']/g, (char) => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+    }[char]));
+  }
+
+  function formatPrice(price) {
+    if (price === null || price === undefined || price === '') return '';
+    const num = Number(price);
+    if (Number.isNaN(num)) return escapeHtml(price);
+    const formatted = Number.isInteger(num) ? num : num.toFixed(2).replace('.', ',');
+    return `${formatted} €`;
+  }
+
+  function renderMenuItem(item) {
+    const priceHtml = formatPrice(item.price);
+    const descHtml = item.description
+      ? `<span class="desc">${escapeHtml(item.description)}</span>`
+      : '';
+    return `
+      <div class="menu-item-wrap">
+        <div class="menu-item">
+          <span class="name">${escapeHtml(item.name)}</span>
+          <span class="leader"></span>
+          <span class="price">${priceHtml}</span>
+        </div>
+        ${descHtml}
+      </div>`;
+  }
+
+  function renderMenu(items) {
+    // Regroupe les plats par catégorie
+    const grouped = {};
+    items.forEach((item) => {
+      const sectionId = CATEGORY_TO_SECTION_ID[item.category];
+      if (!sectionId) return; // catégorie inconnue : on ignore proprement
+      (grouped[sectionId] = grouped[sectionId] || []).push(item);
+    });
+
+    Object.values(CATEGORY_TO_SECTION_ID).forEach((sectionId) => {
+      const list = document.querySelector(`#${sectionId} .menu-list`);
+      if (!list) return;
+      const dishes = grouped[sectionId];
+      list.innerHTML = dishes && dishes.length
+        ? dishes.map(renderMenuItem).join('')
+        : '<p class="menu-empty">Aucun plat disponible pour le moment dans cette catégorie.</p>';
+    });
+  }
+
+  async function loadMenu() {
+    try {
+      const response = await fetch('/api/menu');
+      if (!response.ok) throw new Error(`Réponse API ${response.status}`);
+      const data = await response.json();
+      renderMenu(data.items || []);
+    } catch (err) {
+      console.error('Impossible de charger le menu depuis Airtable :', err);
+      document.querySelectorAll('.menu-list').forEach((list) => {
+        list.innerHTML = '<p class="menu-empty">Le menu n\'a pas pu être chargé. Merci de réessayer un peu plus tard.</p>';
+      });
+    }
+  }
+
+  loadMenu();
 </script>
 
 </body>
