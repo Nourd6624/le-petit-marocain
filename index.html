@@ -1,0 +1,826 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Le Petit Marocain — Restaurant marocain à Creil</title>
+<meta name="description" content="Le Petit Marocain, restaurant marocain à Creil. Couscous, tajines, grillades et pâtisseries maison. Réservation par téléphone ou WhatsApp.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23123832'/%3E%3Cpath d='M50 15 L61 39 L87 39 L66 55 L74 80 L50 65 L26 80 L34 55 L13 39 L39 39 Z' fill='%23B8863B'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#123832;
+    --ink-light:#1B4F46;
+    --ink-dark:#0B2723;
+    --gold:#B8863B;
+    --gold-light:#D4A857;
+    --cream:#F7F2E7;
+    --cream-dim:#EFE7D6;
+    --text:#201C16;
+    --maroon:#7A2E2E;
+    --radius:2px;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    font-family:'Work Sans', sans-serif;
+    color:var(--text);
+    background:var(--cream);
+    line-height:1.6;
+    font-weight:400;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  h1,h2,h3,.display{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    line-height:1.1;
+    letter-spacing:-0.01em;
+  }
+
+  a{color:inherit; text-decoration:none;}
+  ul{list-style:none;}
+  img{max-width:100%; display:block;}
+
+  .container{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px;
+  }
+
+  section{padding:88px 0;}
+
+  /* ---------- Motif zellige (SVG en fond) ---------- */
+  .pattern-bg{
+    background-color:var(--ink);
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='84' height='84' viewBox='0 0 84 84'%3E%3Cg fill='none' stroke='%23B8863B' stroke-width='1' stroke-opacity='0.35'%3E%3Cpath d='M42 4 L52 24 L74 24 L57 38 L64 60 L42 47 L20 60 L27 38 L10 24 L32 24 Z'/%3E%3C/g%3E%3C/svg%3E");
+    background-size:84px 84px;
+  }
+
+  .divider{
+    width:100%;
+    height:28px;
+    background-repeat:repeat-x;
+    background-position:center;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Cpath d='M14 2 L17 11 L26 11 L19 17 L21 26 L14 20 L7 26 L9 17 L2 11 L11 11 Z' fill='none' stroke='%23B8863B' stroke-width='1'/%3E%3C/svg%3E");
+    opacity:0.6;
+  }
+
+  /* ---------- Header / navigation ---------- */
+  .site-header{
+    position:fixed;
+    top:0; left:0; right:0;
+    z-index:100;
+    background:rgba(18,56,50,0.0);
+    transition:background 0.3s ease, box-shadow 0.3s ease, padding 0.3s ease;
+    padding:22px 0;
+  }
+  .site-header.scrolled{
+    background:var(--ink);
+    box-shadow:0 4px 18px rgba(0,0,0,0.18);
+    padding:14px 0;
+  }
+  .site-header .container{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .brand{
+    font-family:'Fraunces', serif;
+    font-size:1.35rem;
+    color:var(--cream);
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .brand .mark{
+    width:22px; height:22px;
+    display:inline-block;
+  }
+  nav.primary-nav ul{
+    display:flex;
+    gap:32px;
+  }
+  nav.primary-nav a{
+    color:var(--cream);
+    font-size:0.95rem;
+    letter-spacing:0.02em;
+    position:relative;
+    padding-bottom:4px;
+  }
+  nav.primary-nav a::after{
+    content:"";
+    position:absolute;
+    left:0; bottom:0;
+    width:0%; height:1px;
+    background:var(--gold-light);
+    transition:width 0.25s ease;
+  }
+  nav.primary-nav a:hover::after{width:100%;}
+
+  .nav-toggle{
+    display:none;
+    background:none;
+    border:none;
+    color:var(--cream);
+    font-size:1.6rem;
+    cursor:pointer;
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    min-height:100svh;
+    display:flex;
+    align-items:center;
+    padding-top:120px;
+    padding-bottom:80px;
+    position:relative;
+    color:var(--cream);
+  }
+  .hero .container{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:28px;
+  }
+  .hero .eyebrow{
+    color:var(--gold-light);
+    font-size:0.95rem;
+    letter-spacing:0.03em;
+  }
+  .hero h1{
+    font-size:clamp(2.8rem, 7vw, 5.4rem);
+    color:var(--cream);
+  }
+  .hero h1 em{
+    font-style:italic;
+    color:var(--gold-light);
+    font-weight:400;
+  }
+  .hero p.lead{
+    max-width:46ch;
+    font-size:1.15rem;
+    color:#E5DFCF;
+    font-weight:300;
+  }
+  .hero .cta-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:16px;
+    margin-top:8px;
+  }
+
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding:15px 30px;
+    font-size:0.95rem;
+    font-weight:500;
+    border-radius:var(--radius);
+    border:1px solid transparent;
+    cursor:pointer;
+    transition:transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+  }
+  .btn-gold{
+    background:var(--gold);
+    color:var(--ink-dark);
+  }
+  .btn-gold:hover{background:var(--gold-light); transform:translateY(-1px);}
+  .btn-outline{
+    border-color:rgba(247,242,231,0.5);
+    color:var(--cream);
+  }
+  .btn-outline:hover{border-color:var(--cream); transform:translateY(-1px);}
+  .btn-whatsapp{
+    background:#2E7D32;
+    color:#fff;
+  }
+  .btn-whatsapp:hover{background:#33903A; transform:translateY(-1px);}
+
+  .hero-address{
+    margin-top:18px;
+    font-size:0.92rem;
+    color:#CFC7B2;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+
+  /* ---------- About ---------- */
+  .about{
+    background:var(--cream);
+  }
+  .about .grid{
+    display:grid;
+    grid-template-columns:1.1fr 0.9fr;
+    gap:64px;
+    align-items:center;
+  }
+  .about .kicker{
+    color:var(--maroon);
+    font-size:0.92rem;
+    margin-bottom:10px;
+  }
+  .about h2{
+    font-size:clamp(2rem, 4vw, 2.9rem);
+    margin-bottom:22px;
+    color:var(--ink);
+  }
+  .about p{
+    max-width:60ch;
+    color:#443E33;
+    margin-bottom:16px;
+  }
+  .about-figure{
+    aspect-ratio:4/5;
+    background:var(--ink);
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%23B8863B' stroke-width='1.2' stroke-opacity='0.55'%3E%3Cpath d='M60 6 L74 34 L106 34 L82 54 L91 86 L60 67 L29 86 L38 54 L14 34 L46 34 Z'/%3E%3C/g%3E%3C/svg%3E");
+    background-size:120px 120px;
+    border-radius:var(--radius);
+    position:relative;
+    display:flex;
+    align-items:flex-end;
+    padding:28px;
+  }
+  .about-figure span{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    color:var(--cream);
+    font-size:1.1rem;
+  }
+
+  .stat-row{
+    display:flex;
+    gap:40px;
+    margin-top:32px;
+    flex-wrap:wrap;
+  }
+  .stat-row .stat b{
+    display:block;
+    font-family:'Fraunces', serif;
+    font-size:2rem;
+    color:var(--ink);
+  }
+  .stat-row .stat span{
+    font-size:0.85rem;
+    color:#6B6152;
+  }
+
+  /* ---------- Menu ---------- */
+  .menu{
+    background:var(--ink);
+    color:var(--cream);
+  }
+  .menu-header{
+    text-align:center;
+    max-width:560px;
+    margin:0 auto 48px;
+  }
+  .menu-header .kicker{color:var(--gold-light); font-size:0.92rem; margin-bottom:10px;}
+  .menu-header h2{font-size:clamp(2rem, 4vw, 2.9rem); margin-bottom:14px;}
+  .menu-header p{color:#CFC7B2; font-weight:300;}
+
+  .menu-tabs{
+    display:flex;
+    gap:10px;
+    overflow-x:auto;
+    padding-bottom:8px;
+    margin-bottom:48px;
+    scrollbar-width:none;
+  }
+  .menu-tabs::-webkit-scrollbar{display:none;}
+  .menu-tabs button{
+    flex:0 0 auto;
+    background:transparent;
+    border:1px solid rgba(247,242,231,0.28);
+    color:var(--cream);
+    padding:10px 20px;
+    border-radius:999px;
+    font-family:'Work Sans', sans-serif;
+    font-size:0.9rem;
+    cursor:pointer;
+    transition:background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    white-space:nowrap;
+  }
+  .menu-tabs button.active,
+  .menu-tabs button:hover{
+    background:var(--gold);
+    border-color:var(--gold);
+    color:var(--ink-dark);
+  }
+
+  .menu-category{display:none;}
+  .menu-category.active{display:block; animation:fadeIn 0.35s ease;}
+  @keyframes fadeIn{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
+
+  .menu-category h3{
+    font-size:1.5rem;
+    color:var(--gold-light);
+    margin-bottom:6px;
+  }
+  .menu-category .cat-desc{
+    color:#B9AF98;
+    font-size:0.9rem;
+    margin-bottom:28px;
+    font-weight:300;
+  }
+
+  .menu-list{max-width:680px;}
+  .menu-item{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    padding:18px 0;
+    border-bottom:1px solid rgba(247,242,231,0.14);
+  }
+  .menu-item:first-child{padding-top:0;}
+  .menu-item .name{
+    font-family:'Fraunces', serif;
+    font-size:1.15rem;
+    color:var(--cream);
+  }
+  .menu-item .leader{
+    flex:1;
+    border-bottom:1px dotted rgba(247,242,231,0.3);
+    transform:translateY(-4px);
+  }
+  .menu-item .price{
+    font-family:'Fraunces', serif;
+    font-size:1.1rem;
+    color:var(--gold-light);
+  }
+  .menu-item .desc{
+    display:block;
+    font-size:0.85rem;
+    color:#A79E8A;
+    font-weight:300;
+    margin-top:4px;
+  }
+  .menu-item-wrap{width:100%;}
+
+  .menu-note{
+    margin-top:40px;
+    font-size:0.85rem;
+    color:#8F8672;
+    font-style:italic;
+  }
+
+  /* ---------- Horaires ---------- */
+  .hours{background:var(--cream);}
+  .hours .grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:64px;
+    align-items:start;
+  }
+  .hours h2{font-size:clamp(2rem, 4vw, 2.9rem); color:var(--ink); margin-bottom:18px;}
+  .hours .kicker{color:var(--maroon); font-size:0.92rem; margin-bottom:10px;}
+  .hours p{color:#443E33; max-width:48ch; margin-bottom:20px;}
+
+  .hours-table{width:100%; border-collapse:collapse;}
+  .hours-table tr{border-bottom:1px solid rgba(18,56,50,0.12);}
+  .hours-table tr:last-child{border-bottom:none;}
+  .hours-table td{padding:14px 0; font-size:0.98rem;}
+  .hours-table td:first-child{color:var(--ink); font-weight:500;}
+  .hours-table td:last-child{text-align:right; color:#5A5142;}
+  .hours-table tr.today td{color:var(--maroon); font-weight:600;}
+  .hours-table tr.closed td:last-child{color:var(--maroon);}
+
+  /* ---------- Adresse ---------- */
+  .location{background:var(--ink-dark); color:var(--cream);}
+  .location .grid{
+    display:grid;
+    grid-template-columns:0.9fr 1.1fr;
+    gap:56px;
+    align-items:stretch;
+  }
+  .location .kicker{color:var(--gold-light); font-size:0.92rem; margin-bottom:10px;}
+  .location h2{font-size:clamp(2rem, 4vw, 2.9rem); margin-bottom:18px;}
+  .location p{color:#CFC7B2; max-width:44ch; margin-bottom:24px; font-weight:300;}
+  .location .addr-block{margin-bottom:28px;}
+  .location .addr-block dt{font-size:0.8rem; color:#8F8672; margin-bottom:4px;}
+  .location .addr-block dd{font-size:1.05rem; color:var(--cream); margin-bottom:18px;}
+  .location .cta-row{display:flex; gap:14px; flex-wrap:wrap;}
+
+  .map-frame{
+    border-radius:var(--radius);
+    overflow:hidden;
+    border:1px solid rgba(247,242,231,0.14);
+    min-height:340px;
+  }
+  .map-frame iframe{width:100%; height:100%; min-height:340px; border:0; filter:grayscale(0.15) contrast(1.05);}
+
+  /* ---------- Footer ---------- */
+  footer{
+    background:var(--ink-dark);
+    color:#B9AF98;
+    padding:48px 0 110px;
+    border-top:1px solid rgba(247,242,231,0.08);
+  }
+  footer .container{
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:24px;
+    align-items:center;
+  }
+  footer .foot-brand{
+    font-family:'Fraunces', serif;
+    color:var(--cream);
+    font-size:1.1rem;
+  }
+  footer .foot-meta{font-size:0.85rem;}
+  footer .foot-meta p{margin-bottom:4px;}
+
+  /* ---------- Barre de contact flottante ---------- */
+  .contact-fab{
+    position:fixed;
+    right:24px;
+    bottom:24px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    z-index:90;
+  }
+  .contact-fab a{
+    width:52px; height:52px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 6px 18px rgba(0,0,0,0.25);
+    transition:transform 0.2s ease;
+  }
+  .contact-fab a:hover{transform:scale(1.06);}
+  .contact-fab .fab-call{background:var(--gold);}
+  .contact-fab .fab-whatsapp{background:#2E7D32;}
+  .contact-fab svg{width:24px; height:24px;}
+
+  .mobile-contact-bar{display:none;}
+
+  /* ---------- Responsive ---------- */
+  @media (max-width:860px){
+    nav.primary-nav{
+      position:fixed;
+      top:0; right:0;
+      height:100vh;
+      width:78%;
+      max-width:320px;
+      background:var(--ink-dark);
+      transform:translateX(100%);
+      transition:transform 0.3s ease;
+      padding:100px 32px 32px;
+      box-shadow:-8px 0 30px rgba(0,0,0,0.3);
+    }
+    nav.primary-nav.open{transform:translateX(0);}
+    nav.primary-nav ul{flex-direction:column; gap:26px;}
+    nav.primary-nav a{font-size:1.05rem;}
+    .nav-toggle{display:block;}
+
+    .about .grid,
+    .hours .grid,
+    .location .grid{
+      grid-template-columns:1fr;
+    }
+    .about-figure{order:-1; aspect-ratio:16/9;}
+
+    section{padding:64px 0;}
+
+    .contact-fab{display:none;}
+    .mobile-contact-bar{
+      display:flex;
+      position:fixed;
+      left:0; right:0; bottom:0;
+      z-index:90;
+      background:var(--ink-dark);
+      border-top:1px solid rgba(247,242,231,0.12);
+      padding:10px 14px;
+      padding-bottom:calc(10px + env(safe-area-inset-bottom));
+      gap:10px;
+    }
+    .mobile-contact-bar a{
+      flex:1;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:12px 10px;
+      border-radius:var(--radius);
+      font-size:0.9rem;
+      font-weight:500;
+    }
+    .mobile-contact-bar svg{width:18px; height:18px;}
+
+    body{padding-bottom:70px;}
+  }
+
+  @media (max-width:520px){
+    .hero .cta-row .btn{flex:1; justify-content:center;}
+    .stat-row{gap:28px;}
+  }
+
+  /* Accessibilité : focus visible */
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--gold-light);
+    outline-offset:3px;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important; transition:none !important; scroll-behavior:auto !important;}
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header" id="siteHeader">
+  <div class="container">
+    <a href="#accueil" class="brand">
+      <svg class="mark" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M50 8 L60 34 L88 34 L65 51 L73 78 L50 62 L27 78 L35 51 L12 34 L40 34 Z" fill="#D4A857"/>
+      </svg>
+      Le Petit Marocain
+    </a>
+    <nav class="primary-nav" id="primaryNav">
+      <ul>
+        <li><a href="#accueil">Accueil</a></li>
+        <li><a href="#apropos">À propos</a></li>
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#horaires">Horaires</a></li>
+        <li><a href="#adresse">Adresse</a></li>
+      </ul>
+    </nav>
+    <button class="nav-toggle" id="navToggle" aria-label="Ouvrir le menu de navigation" aria-expanded="false">☰</button>
+  </div>
+</header>
+
+<section id="accueil" class="hero pattern-bg">
+  <div class="container">
+    <p class="eyebrow">Cuisine marocaine traditionnelle · Creil</p>
+    <h1>Le Petit<br><em>Marocain</em></h1>
+    <p class="lead">Couscous mijotés, tajines parfumés et grillades braisées, préparés comme à Fès — servis dans une salle chaleureuse au cœur de Creil.</p>
+    <div class="cta-row">
+      <a href="#menu" class="btn btn-gold">Voir le menu</a>
+      <a href="tel:+33344123456" class="btn btn-outline">Appeler le restaurant</a>
+    </div>
+    <p class="hero-address">12 Rue de la République, 60100 Creil</p>
+  </div>
+</section>
+
+<div class="divider" aria-hidden="true"></div>
+
+<section id="apropos" class="about">
+  <div class="container grid">
+    <div>
+      <p class="kicker">Notre histoire</p>
+      <h2>Une table marocaine, pensée comme à la maison</h2>
+      <p>Le Petit Marocain est né de l'envie de partager les saveurs du Maroc avec les habitants de Creil et des environs : épices torréfiées maison, cuisson lente à l'étouffée, et pain chaud sorti du four à chaque service.</p>
+      <p>Chaque plat est préparé le jour même, dans le respect des recettes familiales transmises de génération en génération — du couscous du vendredi aux pâtisseries au miel.</p>
+      <div class="stat-row">
+        <div class="stat"><b>100%</b><span>Fait maison</span></div>
+        <div class="stat"><b>6</b><span>Jours d'ouverture</span></div>
+        <div class="stat"><b>+10</b><span>Épices sélectionnées</span></div>
+      </div>
+    </div>
+    <div class="about-figure">
+      <span>« La générosité avant tout »</span>
+    </div>
+  </div>
+</section>
+
+<section id="menu" class="menu pattern-bg">
+  <div class="container">
+    <div class="menu-header">
+      <p class="kicker">La carte</p>
+      <h2>Notre menu</h2>
+      <p>Une sélection de plats emblématiques de la cuisine marocaine, à découvrir sur place ou à emporter.</p>
+    </div>
+
+    <div class="menu-tabs" id="menuTabs" role="tablist" aria-label="Catégories du menu">
+      <button class="active" data-target="couscous">Couscous</button>
+      <button data-target="tajines">Tajines</button>
+      <button data-target="grillades">Grillades</button>
+      <button data-target="entrees">Entrées</button>
+      <button data-target="boissons">Boissons</button>
+      <button data-target="desserts">Desserts</button>
+    </div>
+
+    <div class="menu-category active" id="couscous">
+      <h3>Couscous</h3>
+      <p class="cat-desc">Semoule roulée à la vapeur, légumes de saison et bouillon parfumé aux épices douces.</p>
+      <div class="menu-list">
+        <div class="menu-item-wrap">
+          <div class="menu-item">
+            <span class="name">Couscous royal</span>
+            <span class="leader"></span>
+            <span class="price">18 €</span>
+          </div>
+          <span class="desc">Agneau, poulet et merguez, légumes mijotés</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-category" id="tajines">
+      <h3>Tajines</h3>
+      <p class="cat-desc">Cuisson lente à l'étouffée dans le tajine traditionnel en terre cuite.</p>
+      <div class="menu-list">
+        <div class="menu-item-wrap">
+          <div class="menu-item">
+            <span class="name">Tajine poulet</span>
+            <span class="leader"></span>
+            <span class="price">15 €</span>
+          </div>
+          <span class="desc">Citron confit, olives, oignons caramélisés</span>
+        </div>
+        <div class="menu-item-wrap">
+          <div class="menu-item">
+            <span class="name">Tajine agneau</span>
+            <span class="leader"></span>
+            <span class="price">17 €</span>
+          </div>
+          <span class="desc">Pruneaux, amandes grillées, miel et cannelle</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-category" id="grillades">
+      <h3>Grillades</h3>
+      <p class="cat-desc">Viandes marinées, braisées au feu de bois.</p>
+      <div class="menu-list">
+        <div class="menu-item-wrap">
+          <div class="menu-item">
+            <span class="name">Brochettes</span>
+            <span class="leader"></span>
+            <span class="price">14 €</span>
+          </div>
+          <span class="desc">Bœuf ou poulet, marinade d'épices, servi avec frites</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-category" id="entrees">
+      <h3>Entrées</h3>
+      <p class="cat-desc">Pour ouvrir l'appétit, dans la tradition marocaine.</p>
+      <div class="menu-list">
+        <div class="menu-item-wrap">
+          <div class="menu-item">
+            <span class="name">Pastilla</span>
+            <span class="leader"></span>
+            <span class="price">8 €</span>
+          </div>
+          <span class="desc">Feuilleté croustillant, volaille, amandes, sucre et cannelle</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-category" id="boissons">
+      <h3>Boissons</h3>
+      <p class="cat-desc">Fraîches ou chaudes, pour accompagner le repas.</p>
+      <div class="menu-list">
+        <div class="menu-item-wrap">
+          <div class="menu-item">
+            <span class="name">Thé marocain</span>
+            <span class="leader"></span>
+            <span class="price">3 €</span>
+          </div>
+          <span class="desc">Thé vert à la menthe fraîche, servi traditionnellement</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-category" id="desserts">
+      <h3>Desserts</h3>
+      <p class="cat-desc">Douceurs au miel et aux amandes.</p>
+      <div class="menu-list">
+        <div class="menu-item-wrap">
+          <div class="menu-item">
+            <span class="name">Cornes de gazelle</span>
+            <span class="leader"></span>
+            <span class="price">5 €</span>
+          </div>
+          <span class="desc">Pâtisserie fine à la pâte d'amande et fleur d'oranger</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="menu-note">Exemple d'article ajouté pour compléter la catégorie « Desserts » — à modifier facilement (voir explications).</p>
+  </div>
+</section>
+
+<section id="horaires" class="hours">
+  <div class="container grid">
+    <div>
+      <p class="kicker">Horaires</p>
+      <h2>Quand venir nous voir</h2>
+      <p>Ouvert du mardi au dimanche, midi et soir. Fermé le lundi.</p>
+    </div>
+    <table class="hours-table">
+      <tr class="closed"><td>Lundi</td><td>Fermé</td></tr>
+      <tr><td>Mardi — Jeudi</td><td>12h00–14h30 · 19h00–22h30</td></tr>
+      <tr class="today"><td>Vendredi — Samedi</td><td>12h00–14h30 · 19h00–23h00</td></tr>
+      <tr><td>Dimanche</td><td>12h00–15h00 · 19h00–22h00</td></tr>
+    </table>
+  </div>
+</section>
+
+<section id="adresse" class="location">
+  <div class="container grid">
+    <div>
+      <p class="kicker">Nous trouver</p>
+      <h2>Venez nous rendre visite</h2>
+      <p>Le restaurant se trouve au cœur de Creil, à quelques minutes de la gare.</p>
+      <dl class="addr-block">
+        <dt>Adresse</dt>
+        <dd>12 Rue de la République, 60100 Creil</dd>
+        <dt>Téléphone</dt>
+        <dd>+33 3 44 12 34 56</dd>
+      </dl>
+      <div class="cta-row">
+        <a href="tel:+33344123456" class="btn btn-gold">Appeler</a>
+        <a href="https://wa.me/33612345678" class="btn btn-whatsapp" target="_blank" rel="noopener">WhatsApp</a>
+      </div>
+    </div>
+    <div class="map-frame">
+      <iframe
+        src="https://maps.google.com/maps?q=12%20Rue%20de%20la%20R%C3%A9publique%2C%2060100%20Creil&t=&z=15&ie=UTF8&iwloc=&output=embed"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        title="Carte — Le Petit Marocain, Creil">
+      </iframe>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <span class="foot-brand">Le Petit Marocain</span>
+    <div class="foot-meta">
+      <p>12 Rue de la République, 60100 Creil</p>
+      <p>+33 3 44 12 34 56 · Ouvert du mardi au dimanche</p>
+    </div>
+  </div>
+</footer>
+
+<div class="contact-fab">
+  <a class="fab-call" href="tel:+33344123456" aria-label="Appeler le restaurant">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#0B2723" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+  </a>
+  <a class="fab-whatsapp" href="https://wa.me/33612345678" target="_blank" rel="noopener" aria-label="Contacter sur WhatsApp">
+    <svg viewBox="0 0 24 24" fill="#fff"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.2h.01c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm5.83 14.13c-.24.68-1.4 1.3-1.93 1.35-.52.05-1 .25-3.36-.7-2.84-1.14-4.67-4.02-4.81-4.21-.14-.19-1.15-1.53-1.15-2.92 0-1.39.73-2.07.99-2.35.26-.28.57-.35.76-.35.19 0 .38 0 .55.01.18.01.42-.07.65.5.24.58.81 2 .88 2.15.07.15.12.32.02.51-.1.19-.15.31-.3.48-.15.17-.31.38-.44.51-.15.15-.3.31-.13.6.17.29.76 1.25 1.63 2.02 1.12.99 2.06 1.3 2.35 1.45.29.15.46.12.63-.07.17-.19.72-.84.91-1.13.19-.29.38-.24.64-.14.26.1 1.65.78 1.93.92.28.14.47.21.54.33.07.12.07.68-.17 1.36z"/></svg>
+  </a>
+</div>
+
+<div class="mobile-contact-bar">
+  <a class="btn btn-gold" href="tel:+33344123456">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#0B2723" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+    Appeler
+  </a>
+  <a class="btn btn-whatsapp" href="https://wa.me/33612345678" target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24" fill="#fff"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.2h.01c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm5.83 14.13c-.24.68-1.4 1.3-1.93 1.35-.52.05-1 .25-3.36-.7-2.84-1.14-4.67-4.02-4.81-4.21-.14-.19-1.15-1.53-1.15-2.92 0-1.39.73-2.07.99-2.35.26-.28.57-.35.76-.35.19 0 .38 0 .55.01.18.01.42-.07.65.5.24.58.81 2 .88 2.15.07.15.12.32.02.51-.1.19-.15.31-.3.48-.15.17-.31.38-.44.51-.15.15-.3.31-.13.6.17.29.76 1.25 1.63 2.02 1.12.99 2.06 1.3 2.35 1.45.29.15.46.12.63-.07.17-.19.72-.84.91-1.13.19-.29.38-.24.64-.14.26.1 1.65.78 1.93.92.28.14.47.21.54.33.07.12.07.68-.17 1.36z"/></svg>
+    WhatsApp
+  </a>
+</div>
+
+<script>
+  // Barre de navigation : effet au scroll
+  const header = document.getElementById('siteHeader');
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // Menu mobile (burger)
+  const navToggle = document.getElementById('navToggle');
+  const primaryNav = document.getElementById('primaryNav');
+  navToggle.addEventListener('click', () => {
+    const isOpen = primaryNav.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', isOpen);
+    navToggle.textContent = isOpen ? '✕' : '☰';
+  });
+  primaryNav.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      primaryNav.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+      navToggle.textContent = '☰';
+    });
+  });
+
+  // Onglets du menu
+  const tabs = document.querySelectorAll('#menuTabs button');
+  const categories = document.querySelectorAll('.menu-category');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      categories.forEach(c => c.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById(tab.dataset.target).classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>
