@@ -35,6 +35,20 @@ async function fetchAllRecords(token) {
   return records;
 }
 
+// Extrait l'URL de la première photo d'un champ pièce jointe Airtable.
+// Renvoie null si le champ est vide ou absent (plat sans photo).
+function extractPhotoUrl(photoField) {
+  if (!Array.isArray(photoField) || photoField.length === 0) return null;
+  const first = photoField[0];
+  if (!first) return null;
+  // On privilégie une miniature "large" (plus légère qu'un fichier original)
+  // et on retombe sur l'URL complète si la miniature n'existe pas.
+  if (first.thumbnails && first.thumbnails.large && first.thumbnails.large.url) {
+    return first.thumbnails.large.url;
+  }
+  return first.url || null;
+}
+
 module.exports = async function handler(req, res) {
   if (req.method !== 'GET') {
     res.setHeader('Allow', 'GET');
@@ -60,6 +74,7 @@ module.exports = async function handler(req, res) {
           category: (fields['Catégorie'] || '').trim(),
           description: (fields['Description'] || '').trim(),
           price: fields['Prix'] ?? null,
+          photoUrl: extractPhotoUrl(fields['Photo']),
         };
       })
       .filter((item) => item.name && item.category);
